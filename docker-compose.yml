@@ -1,0 +1,39 @@
+version: "3.8"
+# --------- #
+# Services  #
+# --------- #
+services:
+  ###########
+  # PHP-FPM #
+  ###########
+  php-fpm:
+    build: docker/php-fpm
+    networks:
+      internal:
+        aliases:
+          - php-fpm.internal
+    volumes:
+      - $PWD/:/var/www/html:delegated
+  ###########
+  # Apache #
+  ###########
+  apache:
+    build: docker/httpd
+    networks:
+      internal:
+        aliases:
+          - apache.internal
+    ports:
+    - 8008:80
+    volumes:
+      - $PWD/:/var/www/html/:delegated
+# --------- #
+# Networks  #
+# --------- #
+networks:
+  internal:
+# ------- #
+# Volumes #
+# ------- #
+volumes:
+  data:
